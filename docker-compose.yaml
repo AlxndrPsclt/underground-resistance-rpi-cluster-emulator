@@ -1,0 +1,46 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '3'
+
+services:
+  simonpi-rpi-3-02:
+    container_name: simonpi-rpi-3-02
+    image: m0rf30/simonpi
+    stdin_open: true
+    tty: true
+    command: 'simonpi rpi-3 -i /root/.simonpi/2018-06-27-raspbian-stretch-lite.img -s 8'
+    privileged: true
+    volumes:
+    - /dev:/dev
+    - ./mountfolders/simonpi02:/root/.simonpi
+    #- ~/.simonpi:/root/.simonpi
+#    ports:
+#    - "2222:2222"
+    networks:
+    - underground-resistance-net
+
+
+  simonpi-rpi-3-03:
+    container_name: simonpi-rpi-3-03
+    image: m0rf30/simonpi
+    stdin_open: true
+    tty: true
+    command: 'simonpi rpi-3 -i /root/.simonpi/2018-06-27-raspbian-stretch-lite.img -s 8'
+    privileged: true
+    volumes:    
+    - /dev:/dev
+    - ./mountfolders/simonpi03:/root/.simonpi
+    #- ~/.simonpi:/root/.simonpi
+#    ports:
+#    - "2223:2222"
+    networks:
+    - underground-resistance-net
+
+
+
+networks:
+  underground-resistance-net:
+
