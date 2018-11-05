@@ -1,16 +1,16 @@
 version: '3'
 
 services:
-  underground-resistance-mgr1:
-    container_name: underground-resistance-mgr1
+  underground-resistance-001:
+    container_name: underground-resistance-001
     image: m0rf30/simonpi
     stdin_open: true
     tty: true
-    command: 'simonpi rpi-3 -i /root/.simonpi/2018-10-09-raspbian-stretch-lite.img -s 8'
+    command: "simonpi rpi-3 -i /root/.simonpi/${SEED_IMAGE_FILENAME} -s 8"
     privileged: true
     volumes:
     - /dev:/dev
-    - ./mountfolders/underground-resistance-mgr1:/root/.simonpi
+    - ${CLUSTER_VIRTUAL_DISK_FOLDER}/underground-resistance-001:/root/.simonpi
     #- ~/.simonpi:/root/.simonpi
 #    ports:
 #    - "2222:2222"
@@ -18,17 +18,16 @@ services:
     - underground-resistance-net
 
 
-  underground-resistance-wrk1:
-    container_name: underground-resistance-wrk1
+  underground-resistance-002:
+    container_name: underground-resistance-002
     image: m0rf30/simonpi
     stdin_open: true
     tty: true
-    command: 'simonpi rpi-3 -i /root/.simonpi/2018-10-09-raspbian-stretch-lite.img -s 8'
+    command: "simonpi rpi-3 -i /root/.simonpi/${SEED_IMAGE_FILENAME} -s 8"
     privileged: true
     volumes:    
     - /dev:/dev
-    - ./mountfolders/underground-resistance-wrk1:/root/.simonpi
-    #- ~/.simonpi:/root/.simonpi
+    - ${CLUSTER_VIRTUAL_DISK_FOLDER}/underground-resistance-002:/root/.simonpi
 #    ports:
 #    - "2223:2222"
     networks:
