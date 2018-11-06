@@ -16,8 +16,17 @@ source ./.env
 
 if [ -d $CLUSTER_VIRTUAL_DISKS_FOLDER ]; then
 	echo "The virtual disk folder specified in .env already exists at: $CLUSTER_VIRTUAL_DISKS_FOLDER"
-	#TODO: Give option to delete or proceed
-else
+	read -p "Do you want to delete it and start with a new cluster?" -n 1 -r
+	echo
+	if [[ $REPLY =~ ^[Yy]$ ]]
+	then
+		echo "Deleting the content of $CLUSTER_VIRTUAL_DISKS_FOLDER."
+		rm -rf $CLUSTER_VIRTUAL_DISKS_FOLDER
+	fi
+fi
+
+if [ ! -d $CLUSTER_VIRTUAL_DISKS_FOLDER ]; then
+then
 	echo "The folder $CLUSTER_VIRTUAL_DISKS_FOLDER will be created to host the virtual disk file."
 	mkdir -p $CLUSTER_VIRTUAL_DISKS_FOLDER
 
