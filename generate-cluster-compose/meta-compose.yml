@@ -2,7 +2,7 @@ version: '3'
 
 services:
 {% set count= 3 | env('NUMBER_OF_RPI_NODES') | int %}
-{% for node_id in range(count) %}
+{% for node_id in range(1, count+1) %}
   underground-resistance-{{ "{:03d}".format(node_id) }}:
     container_name: underground-resistance-{{ "{:03d}".format(node_id) }}
     image: m0rf30/simonpi
@@ -11,8 +11,8 @@ services:
     command: "simonpi rpi-3 -i /root/.simonpi/${SEED_IMAGE_FILENAME} -s 8"
     privileged: true
     volumes:
-    - /dev:/dev
-    - ${CLUSTER_VIRTUAL_DISK_FOLDER}/underground-resistance-{{ "{:03d}".format(node_id) }}:/root/.simonpi
+      - /dev:/dev
+      - ${VIRTUAL_DISKS_PATH}/${CLUSTER_ID}/underground-resistance-{{ "{:03d}".format(node_id) }}:/root/.simonpi
 #    ports:
 #    - "2222:2222"
     networks:
