@@ -1,0 +1,12 @@
+version: '3.1'
+
+services:
+
+  metacompose:
+    build: app/
+    command: "meta-compose -t meta-compose.yml -o cluster-compose.yml"
+    env_file:
+      - ../.env
+    volumes:
+      - ./meta-compose.yml:/usr/src/app/meta-compose.yml
+      - ../cluster-compose.yml:/usr/src/app/cluster-compose.yml

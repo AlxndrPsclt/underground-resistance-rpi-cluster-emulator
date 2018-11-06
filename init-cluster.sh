@@ -1,7 +1,18 @@
 #! /usr/bin/env bash
 
-source ./.env
+echo "Preparing the launch of the RPI emulator."
+echo "All config comes from the .env file"
+echo "Generating cluster-compose.yml file..."
+if [ ! -f cluster-compose.yml ]; then
+	touch cluster-compose.yml
+fi
+docker-compose -f ./generate-cluster-compose/generate-compose.yml up
+echo "cluster-compose.yml is ready."
+echo ""
 
+echo "Preparing virtual disks..."
+
+source ./.env
 
 if [ -d $CLUSTER_VIRTUAL_DISKS_FOLDER ]; then
 	echo "The virtual disk folder specified in .env already exists at: $CLUSTER_VIRTUAL_DISKS_FOLDER"
@@ -32,9 +43,9 @@ else
 
 	done
 
-
 fi
 
+echo "Virtual disks ready."
+echo "Everything is ready, launching the virtual cluster."
 
-
-#docker-compose up
+#docker-compose -f cluster-compose.yml up
