@@ -12,6 +12,10 @@ echo ""
 
 echo "Preparing virtual disks..."
 
+
+if [ ! -f .env ]; then
+	cp .env.default .env
+fi
 source ./.env
 
 if [ -d $CLUSTER_VIRTUAL_DISKS_FOLDER ]; then
