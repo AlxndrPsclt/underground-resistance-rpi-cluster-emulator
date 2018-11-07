@@ -3,9 +3,15 @@
 echo "Preparing the launch of the RPI emulator."
 echo "All config comes from the .env file"
 echo "Generating cluster-compose.yml file..."
+
+if [ ! -f .env ]; then
+	cp .env.default .env
+fi
+
 if [ ! -f cluster-compose.yml ]; then
 	touch cluster-compose.yml
 fi
+
 docker-compose -f ./generate-cluster-compose/generate-compose.yml up
 echo "cluster-compose.yml is ready."
 echo ""
@@ -13,9 +19,6 @@ echo ""
 echo "Preparing virtual disks..."
 
 
-if [ ! -f .env ]; then
-	cp .env.default .env
-fi
 source ./.env
 
 if [ -d $CLUSTER_VIRTUAL_DISKS_FOLDER ]; then
