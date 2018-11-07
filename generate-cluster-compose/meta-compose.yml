@@ -13,10 +13,10 @@ services:
     volumes:
       - /dev:/dev
       - ${VIRTUAL_DISKS_PATH}/${CLUSTER_ID}/underground-resistance-{{ "{:03d}".format(node_id) }}:/root/.simonpi
-#    ports:
-#    - "2222:2222"
+    ports:
+      - "2{{ "{:03d}".format(node_id) }}:2222"
     networks:
-    - underground-resistance-net
+      - underground-resistance-net
 {% endfor %}
 
 networks:
