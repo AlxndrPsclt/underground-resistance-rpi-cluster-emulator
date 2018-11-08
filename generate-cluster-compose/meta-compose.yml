@@ -19,6 +19,14 @@ services:
       - underground-resistance-net
 {% endfor %}
 
+  ansible:
+    build: ansible/app/
+    command: "meta-compose -t meta-compose.yml -o cluster-compose.yml"
+    volumes:
+      - ./ansible/playbooks:/usr/src/app/
+    networks:
+      - underground-resistance-net
+
 networks:
   underground-resistance-net:
 
