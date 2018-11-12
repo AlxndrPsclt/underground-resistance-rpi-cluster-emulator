@@ -23,6 +23,7 @@ services:
     build: ansible/app/
     command: ["ansible-playbook", "-i", "inventory.ini", "playbook.yml"]
     #command: "./test-connect.sh"
+    restart: on-failure
     volumes:
       - $ANSIBLE_PLAYBOOKS_FOLDER:/usr/src/app/
     networks:
