@@ -21,9 +21,10 @@ services:
 
   ansible:
     build: ansible/app/
-    command: "meta-compose -t meta-compose.yml -o cluster-compose.yml"
+    command: ["ansible-playbook", "-i", "inventory.ini", "playbook.yml"]
+    #command: "./test-connect.sh"
     volumes:
-      - ./ansible/playbooks:/usr/src/app/
+      - $ANSIBLE_PLAYBOOKS_FOLDER:/usr/src/app/
     networks:
       - underground-resistance-net
 

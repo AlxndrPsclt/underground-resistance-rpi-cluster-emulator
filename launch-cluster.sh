@@ -27,7 +27,7 @@ if [ -d $CLUSTER_VIRTUAL_DISKS_FOLDER ]; then
 	echo
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		echo "Deleting the content of $CLUSTER_VIRTUAL_DISKS_FOLDER."
-		rm -rf $CLUSTER_VIRTUAL_DISKS_FOLDER
+		sudo rm -rf $CLUSTER_VIRTUAL_DISKS_FOLDER
 	fi
 fi
 
