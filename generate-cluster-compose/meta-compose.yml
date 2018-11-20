@@ -21,7 +21,7 @@ services:
 
   ansible:
     build: ansible/app/
-    command: ["ansible-playbook", "-i", "inventory.ini", "playbook.yml"]
+    command: ["ansible-playbook", "-i", "inventory.yml", "playbook.yml"]
     #command: "./test-connect.sh"
     restart: on-failure   #The ansible container will start and fail several times until the cluster is up and responding to ssh. It will then execute and stop when successfull
     volumes:
