@@ -4,7 +4,6 @@ WORKDIR /usr/src/app
 
 RUN mkdir /usr/src/init
 COPY requirements.txt /usr/src/init/
-COPY wait-for-it.sh /usr/src/init/
 
 RUN pip install --no-cache-dir -r /usr/src/init/requirements.txt
 

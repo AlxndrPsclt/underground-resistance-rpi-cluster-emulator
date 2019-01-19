@@ -1,15 +1,17 @@
 #! /usr/bin/env bash
 
 RED='\033[0;31m'
+BLUE='\033[0;34m'
 BROWN='\033[0;33m'
 GREEN='\033[0;32m'
 L_GRAY='\033[0;37m'
+L_PURPLE='\033[1;35m'
 NC='\033[0m' # No Color
 
 
-echo -e "Preparing the launch of the RPI emulator.\n"
+echo -e "${BLUE}Preparing the launch of the RPI emulator.${NC}\n"
 echo -e "${L_GRAY}All config comes from the .env file${NC}"
-echo "Generating cluster-compose.yml file..."
+echo -e "${BROWN}Generating cluster-compose.yml file...${NC}"
 
 if [ ! -f .env ]; then
 	cp .env.default .env
@@ -18,20 +20,20 @@ fi
 if [ ! -f cluster-compose.yml ]; then
 	touch cluster-compose.yml
 else
-	echo -e "${BROWN}cluster-compose.yml exists, stopping the stack...${NC}"
-	docker-compose -f cluster-compose.yml down
+	echo -e "${RED}cluster-compose.yml exists, cleaning the stack...${NC}"
+	sudo docker-compose -f cluster-compose.yml down
 	echo -e ""
 fi
 
-docker-compose -f ./generate-cluster-compose/generate-compose.yml up
+sudo docker-compose -f ./generate-cluster-compose/generate-compose.yml up
 echo -e "${GREEN}cluster-compose.yml is ready.${NC}\n"
 
-echo -e "Preparing virtual disks..."
+echo -e "${BROWN}Preparing virtual disks...${NC}"
 
 source ./.env
 
 if [ -d $CLUSTER_VIRTUAL_DISKS_FOLDER ]; then
-	echo "The virtual disk folder specified in .env already exists at: $CLUSTER_VIRTUAL_DISKS_FOLDER"
+	echo -e "${L_GRAY}The virtual disk folder specified in .env already exists at:${NC} $CLUSTER_VIRTUAL_DISKS_FOLDER"
 	read -p "Do you want to delete it and start with a new cluster?" -n 1 -r
 	echo
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -67,6 +69,8 @@ if [ ! -d $CLUSTER_VIRTUAL_DISKS_FOLDER ]; then
 fi
 
 echo -e "${GREEN}Virtual disks ready."
-echo -e "Everything is ready, launching the virtual cluster.${NC}"
+echo -e "${BROWN}Everything is ready, starting the virtual cluster.${NC}"
 
-docker-compose -f cluster-compose.yml up
+sudo docker-compose -f cluster-compose.yml up -d
+ANSIBLE_ID=$(sudo docker ps -aq --filter "name=ansible")
+sudo docker attach $ANSIBLE_ID

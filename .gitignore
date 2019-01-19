@@ -1,2 +1,3 @@
 cluster-compose.yml
 .env
+.env.bak
