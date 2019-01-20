@@ -9,9 +9,9 @@ L_PURPLE='\033[1;35m'
 NC='\033[0m' # No Color
 
 
-echo -e "${BLUE}Preparing the launch of the RPI emulator.${NC}\n"
-echo -e "${L_GRAY}All config comes from the .env file${NC}"
-echo -e "${BROWN}Generating cluster-compose.yml file...${NC}"
+echo -e "${BLUE}Preparing the launch of the RPI emulator.\n"
+echo -e "${L_GRAY}All config comes from the .env file"
+echo -e "${BROWN}Generating cluster-compose.yml file..."
 
 if [ ! -f .env ]; then
 	cp .env.default .env
@@ -26,7 +26,7 @@ else
 fi
 
 sudo docker-compose -f ./generate-cluster-compose/generate-compose.yml up
-echo -e "${GREEN}cluster-compose.yml is ready.${NC}\n"
+echo -e "${GREEN}cluster-compose.yml is ready.\n${NC}"
 
 echo -e "${BROWN}Preparing virtual disks...${NC}"
 
@@ -43,15 +43,12 @@ if [ -d $CLUSTER_VIRTUAL_DISKS_FOLDER ]; then
 fi
 
 if [ ! -d $CLUSTER_VIRTUAL_DISKS_FOLDER ]; then
-	echo "The folder $CLUSTER_VIRTUAL_DISKS_FOLDER will be created to host the virtual disk file."
+	echo -e "${L_GRAY}The folder $CLUSTER_VIRTUAL_DISKS_FOLDER will be created to host the virtual disk file.${NC}"
 	mkdir -p $CLUSTER_VIRTUAL_DISKS_FOLDER
 
 	for i in `seq -w 1 $NUMBER_OF_RPI_NODES`; do
 		no=$(printf "%03d" $i)
-		NODE_VIRTUAL_DISK_FOLDER=$CLUSTER_VIRTUAL_DISKS_FOLDER/underground-resistance-$no
-		mkdir -p $NODE_VIRTUAL_DISK_FOLDER
-		echo "Created virtual folder disk for node underground-resistance-$no"
-
+		
 		if [ ! -f $SEED_IMAGE_PATH ]; then
 			echo -e "${BROWN}File $SEED_IMAGE_PATH does not exist. Downloading the latest raspbian image...${NC}"
 			wget -q --show-progress -P $SEED_IMAGES_PATH https://downloads.raspberrypi.org/raspbian_lite_latest
@@ -63,14 +60,19 @@ if [ ! -d $CLUSTER_VIRTUAL_DISKS_FOLDER ]; then
 			sed -i.bak s/$SEED_IMAGE_FILENAME/$NEW_SEED_IMAGE_FILENAME/g .env
 		fi
 
-		echo "$SEED_IMAGE_PATH will be copied to the virtual disk n°$i."
+		echo -e "$SEED_IMAGE_PATH will be copied to the virtual disk n°$i.${NC}"
+		NODE_VIRTUAL_DISK_FOLDER=$CLUSTER_VIRTUAL_DISKS_FOLDER/underground-resistance-$no
+		mkdir -p $NODE_VIRTUAL_DISK_FOLDER
 		cp $SEED_IMAGE_PATH $NODE_VIRTUAL_DISK_FOLDER
+		echo -e "${GREEN}Created virtual folder disk for node underground-resistance-$no${NC}"
 	done
 fi
 
-echo -e "${GREEN}Virtual disks ready."
+echo -e "${GREEN}Virtual disks ready.${NC}"
 echo -e "${BROWN}Everything is ready, starting the virtual cluster.${NC}"
 
 sudo docker-compose -f cluster-compose.yml up -d
 ANSIBLE_ID=$(sudo docker ps -aq --filter "name=ansible")
+
+echo -e "${GREEN}Attaching to ansible container:${NC}"
 sudo docker attach $ANSIBLE_ID
